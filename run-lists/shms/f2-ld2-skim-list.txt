@@ -1,5 +1,5 @@
 # hcswif command for generating f2 ld2 skim scaler files
-./hcswif.py --mode replay --spectrometer SHMS_SCALER --run 2493 2518 2527 2549 2607 2672 2706 2724 2750 2776 2792 2858 2862 2873 2876 2884 2890 2943 2965 3005 3021 3053 3064 3079 3086 --name f2-ld2-skim-scaler --project c-comm2017 --cpu 1
+./hcswif.py --mode replay --spectrometer SHMS_SCALER --run 2493 2518 2527 2549 2607 2672 2706 2724 2750 2776 2792 2858 2862 2873 2876 2884 2890 2943 2965 3005 3021 3053 3064 3079 3086 --name f2-ld2-skim-scaler --project c-comm2017 --cpu 1 --ram 4000000000 --disk 100000000
 swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/f2-ld2-skim-scaler.json
 swif run f2-ld2-skim-scaler
 
@@ -8,7 +8,7 @@ swif run f2-ld2-skim-scaler
 swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/f2-ld2-skim-all.json
 swif run f2-ld2-skim-all
 
-# hcswif command for generating f2 ld2 skim production files
+# hcswif command for generating f2 ld2 skim prod files
 ./hcswif.py --mode replay --spectrometer SHMS_PROD --run 2493 2518 2527 2549 2607 2672 2706 2724 2750 2776 2792 2858 2862 2873 2876 2884 2890 2943 2965 3005 3021 3053 3064 3079 3086 --name f2-ld2-skim-prod --project c-comm2017 --cpu 1
 swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/f2-ld2-skim-all.json
 swif run f2-ld2-skim-all
