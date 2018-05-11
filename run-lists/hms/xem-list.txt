@@ -1,0 +1,102 @@
+# hcswif command for generating hms xem scaler files
+./hcswif.py --mode replay --spectrometer HMS_SCALER --run 1565 1566 1571-1581 1586 1588-1591 1592-1602 1603-1621 1622-1633 1634-1641 --name hms-xem-scaler --project c-comm2017 --cpu 1 --ram 4000000000 --disk 100000000
+swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/hms-xem-scaler.json
+swif run hms-xem-scaler
+
+# hcswif command for generating replay all hms xem files
+./hcswif.py --mode replay --spectrometer HMS_ALL --run 1565 1566 1571-1581 1586 1588-1591 1592-1602 1603-1621 1622-1633 1634-1641 --name hms-xem-all --project c-comm2017 --cpu 1
+swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/hms-xem-all.json
+swif run hms-xem-all
+
+# hcswif command for generating replay prod hms xem files
+./hcswif.py --mode replay --spectrometer HMS_PROD --run 1565 1566 1571-1581 1586 1588-1591 1592-1602 1603-1621 1622-1633 1634-1641 --name hms-xem-prod --project c-comm2017 --cpu 1
+swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/hms-xem-prod.json
+swif run hms-xem-prod
+
+# hcswif hms xem 21deg_m5p7 run list
+1565 1566 1571-1581 1586 1588-1591
+
+# hcswif hms xem 21deg_m5p1 run list
+1592-1602
+
+# hcswif hms xem 21deg_m4p5 run list
+1603-1621
+
+# hcswif hms xem 21deg_m4p0 run list
+1622-1633
+
+# hcswif hms xem 21deg_m3p3 run list
+1634-1641
+
+# hcswif hms xem full run list
+1565 1566 1571-1581 1586 1588-1591 1592-1602 1603-1621 1622-1633 1634-1641
+
+# hms xem full run list for generating bcm param files
+1565
+1566
+1571
+1572
+1573
+1574
+1575
+1576
+1577
+1578
+1579
+1580
+1581
+1586
+1588
+1589
+1590
+1591
+1592
+1593
+1594
+1595
+1596
+1597
+1598
+1599
+1600
+1601
+1602
+1603
+1604
+1605
+1606
+1607
+1608
+1609
+1610
+1611
+1612
+1613
+1614
+1615
+1616
+1617
+1618
+1619
+1620
+1621
+1622
+1623
+1624
+1625
+1626
+1627
+1628
+1629
+1630
+1631
+1632
+1633
+1634
+1635
+1636
+1637
+1638
+1639
+1640
+1641

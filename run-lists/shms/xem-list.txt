@@ -1,37 +1,37 @@
-# hcswif command for generating all xem scaler files
-./hcswif.py --mode replay --spectrometer SHMS_SCALER --run 2484-2498 2502-2505 2507-2508 2509-2523 2524-2538 2540-2545 2547-2563 --name xem-scaler --project c-comm2017 --cpu 1 --ram 4000000000 --disk 100000000
-swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/xem-scaler.json
-swif run xem-scaler
+# hcswif command for generating shms xem scaler files
+./hcswif.py --mode replay --spectrometer SHMS_SCALER --run 2484-2498 2502-2505 2507-2508 2509-2523 2524-2538 2540-2545 2547-2563 --name shms-xem-scaler --project c-comm2017 --cpu 1 --ram 4000000000 --disk 100000000
+swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/shms-xem-scaler.json
+swif run shms-xem-scaler
 
-# hcswif command for generating replay all xem files
-./hcswif.py --mode replay --spectrometer SHMS_ALL --run 2484-2498 2502-2505 2507-2508 2509-2523 2524-2538 2540-2545 2547-2563 --name xem-all --project c-comm2017 --cpu 1
-swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/xem-all.json
-swif run xem-all
+# hcswif command for generating replay all shms xem files
+./hcswif.py --mode replay --spectrometer SHMS_ALL --run 2484-2498 2502-2505 2507-2508 2509-2523 2524-2538 2540-2545 2547-2563 --name shms-xem-all --project c-comm2017 --cpu 1
+swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/shms-xem-all.json
+swif run shms-xem-all
 
-# hcswif command for generating replay prod xem files
-./hcswif.py --mode replay --spectrometer SHMS_PROD --run 2484-2498 2502-2505 2507-2508 2509-2523 2524-2538 2540-2545 2547-2563 --name xem-prod --project c-comm2017 --cpu 1
-swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/xem-prod.json
-swif run xem-prod
+# hcswif command for generating replay prod shms xem files
+./hcswif.py --mode replay --spectrometer SHMS_PROD --run 2484-2498 2502-2505 2507-2508 2509-2523 2524-2538 2540-2545 2547-2563 --name shms-xem-prod --project c-comm2017 --cpu 1
+swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/shms-xem-prod.json
+swif run shms-xem-prod
 
-# hcswif xem 21deg_m5p1 run list
+# hcswif shms xem 21deg_m5p1 run list
 2484-2498 2502-2505 2507-2508
 
-# hcswif xem 21deg_m4p0 run list
+# hcswif shms xem 21deg_m4p0 run list
 2509-2523
 
-# hcswif xem 21deg_m3p3 run list
+# hcswif shms xem 21deg_m3p3 run list
 2524-2538 2540-2545
 
-# hcswif xem 21deg_m2p7 run list
+# hcswif shms xem 21deg_m2p7 run list
 2547-2563
 
-# hcswif xem full run list
+# hcswif shms xem full run list
 2484-2498 2502-2505 2507-2508 2509-2523 2524-2538 2540-2545 2547-2563
 
-# hcswif xem full run list prior to run ranges being specified
+# hcswif shms xem full run list prior to run ranges being specified
 2484 2485 2486 2487 2488 2489 2490 2491 2492 2493 2494 2495 2496 2497 2498 2502 2503 2504 2505 2507 2508 2509 2510 2511 2512 2513 2514 2515 2516 2517 2518 2519 2520 2521 2522 2523 2524 2525 2526 2527 2528 2529 2530 2531 2532 2533 2534 2535 2536 2537 2538 2540 2541 2542 2543 2544 2545 2547 2548 2549 2550 2551 2552 2553 2554 2555 2556 2557 2558 2559 2560 2561 2562 2563
 
-# xem full run list for generating xem bcm param files
+# shms xem full run list for generating bcm param files
 2484
 2485
 2486

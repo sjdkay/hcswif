@@ -2,8 +2,8 @@
 
 from __future__ import print_function
 
-runListFile = 'f2-list-temp.txt'
-vertListFile = open('f2-list-vert.txt', 'w')
+runListFile = '../hms/f2-list-temp.txt'
+vertListFile = open('../hms/f2-list-vert.txt', 'w')
 
 with open(runListFile) as rlf:
     l = rlf.readline()
