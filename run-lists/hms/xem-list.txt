@@ -4,7 +4,7 @@ swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/hms-xe
 swif run hms-xem-scaler
 
 # hcswif command for generating replay all hms xem files
-./hcswif.py --mode replay --spectrometer HMS_ALL --run 1565 1566 1571-1581 1586 1588-1591 1592-1602 1603-1621 1622-1633 1634-1641 --name hms-xem-all --project c-comm2017 --cpu 1
+./hcswif.py --mode replay --spectrometer HMS_ALL --run 1565 1566 1571-1581 1586 1588-1591 1592-1602 1603-1621 1622-1633 1634-1641 --name hms-xem-all --project c-comm2017 --cpu 1 --disk 30000000000 --time 28800
 swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/hms-xem-all.json
 swif run hms-xem-all
 
@@ -12,6 +12,15 @@ swif run hms-xem-all
 ./hcswif.py --mode replay --spectrometer HMS_PROD --run 1565 1566 1571-1581 1586 1588-1591 1592-1602 1603-1621 1622-1633 1634-1641 --name hms-xem-prod --project c-comm2017 --cpu 1
 swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/hms-xem-prod.json
 swif run hms-xem-prod
+
+#hcswif command for generating hms xem calorimeter calibration files
+./hcswif.py --mode replay --spectrometer HMS_ALL --run 1577 1597 1608 1624 1640 --name hms-xem-cal-calib --project c-comm2017 --cpu 1 --disk 20000000000
+swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/hms-xem-cal-calib.json
+swif run hms-xem-cal-calib
+
+
+#hcswif hms xem calorimeter calibration run list
+1577 1597 1608 1624 1640
 
 # hcswif hms xem 21deg_m5p7 run list
 1565 1566 1571-1581 1586 1588-1591

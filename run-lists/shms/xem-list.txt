@@ -4,7 +4,7 @@ swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/shms-x
 swif run shms-xem-scaler
 
 # hcswif command for generating replay all shms xem files
-./hcswif.py --mode replay --spectrometer SHMS_ALL --run 2484-2498 2502-2505 2507-2508 2509-2523 2524-2538 2540-2545 2547-2563 --name shms-xem-all --project c-comm2017 --cpu 1
+./hcswif.py --mode replay --spectrometer SHMS_ALL --run 2484-2498 2502-2505 2507-2508 2509-2523 2524-2538 2540-2545 2547-2563 --name shms-xem-all --project c-comm2017 --cpu 1 --disk 30000000000 --time 28800
 swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/shms-xem-all.json
 swif run shms-xem-all
 
