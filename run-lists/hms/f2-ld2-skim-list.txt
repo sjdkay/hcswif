@@ -1,0 +1,30 @@
+# hcswif command for generating hms f2 ld2 skim scaler files
+./hcswif.py --mode replay --spectrometer HMS_SCALER --run 1577 1597 1608 1624 1640 1652 1795 1808 1850 1936 1992 --name hms-f2-ld2-skim-scaler --project c-comm2017 --cpu 1 --ram 4000000000 --disk 100000000
+swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/hms-f2-ld2-skim-scaler.json
+swif run hms-f2-ld2-skim-scaler
+
+# hcswif command for generating hms f2 ld2 skim all files
+./hcswif.py --mode replay --spectrometer HMS_ALL --run 1577 1597 1608 1624 1640 1652 1795 1808 1850 1936 1992 --name hms-f2-ld2-skim-all --project c-comm2017 --cpu 1 --disk 30000000000 --time 28800
+swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/hms-f2-ld2-skim-all.json
+swif run hms-f2-ld2-skim-all
+
+# hcswif command for generating hms f2 ld2 skim prod files
+./hcswif.py --mode replay --spectrometer HMS_PROD --run 1577 1597 1608 1624 1640 1652 1795 1808 1850 1936 1992 --name hms-f2-ld2-skim-prod --project c-comm2017 --cpu 1 
+swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/hms-f2-ld2-skim-all.json
+swif run hms-f2-ld2-skim-prod
+
+# hcswif hms f2 ld2 skim run list
+1577 1597 1608 1624 1640 1652 1795 1808 1850 1936 1992
+
+# List for generating hms f2 ld2 skim bcm param files
+1577 
+1597
+1608
+1624
+1640
+1652
+1795
+1808
+1850
+1936
+1992

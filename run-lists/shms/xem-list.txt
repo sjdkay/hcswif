@@ -13,6 +13,14 @@ swif run shms-xem-all
 swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/shms-xem-prod.json
 swif run shms-xem-prod
 
+# hcswif command for generating shms xem calorimeter calibration files
+./hcswif.py --mode replay --spectrometer SHMS_ALL --run 2493 2518 2527 2549 --name shms-xem-cal-calib --project c-comm2017 --cpu 1 --disk 30000000000 --time 28800
+swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/shms-xem-cal-calib.json
+swif run shms-xem-cal-calib
+
+# hcswif shms xem calorimeter calibration run list
+2493 2518 2527 2549
+
 # hcswif shms xem 21deg_m5p1 run list
 2484-2498 2502-2505 2507-2508
 
