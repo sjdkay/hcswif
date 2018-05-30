@@ -50,8 +50,8 @@ filelist     | -        | optional | List of files needed for your shell script
 name         | optional | optional | Name of workflow. Default is hcswifXXXXXXXX, with a timestamp suffix
 project      | optional | optional | Project to which the time should be accounted. Default is c-comm2017, but I might remove that to prevent accidental use of that account.
 disk         | optional | optional | How much disk space do you need in bytes? Default = 10GB
-ram          | optional | optional | How much RAM do you need in bytes? Default = 8GB
-cpu          | optional | optional | How many cores? Default = 8
+ram          | optional | optional | How much RAM do you need in bytes? Default = 2.5GB
+cpu          | optional | optional | How many cores? Default = 1
 shell        | optional | optional | What shell should your jobs use? Default is bash
 
 
