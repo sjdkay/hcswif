@@ -85,3 +85,18 @@ $ ./hcswif.py --mode shell --command /some/directory/myscript.sh --name myswifjo
 Should I use project=c-comm2017? (y/n): y
 Wrote: /some/directory/myswifjob.json
 ```
+
+## swif errors
+These are descriptions of some errors you may see when you run `swif status`. Thank you to [Hall D's wiki](https://halldweb.jlab.org/wiki/index.php/DEPRECATED_Offline_Monitoring_Archived_Data) for this info.
+
+| ERROR | Description | Possible solution |
+| ---------- | ----------- | ----------------- |
+| AUGER-SUBMIT | SWIF’s attempt to submit jobs to Auger failed. Includes server-side problems as well as user failing to provide valid job parameters (e.g. incorrect project name, too many resources, etc.) | If requested resources are known to be correct, resubmit. Otherwise, modify job resources using `swif modify`.|
+| AUGER-FAILED | Auger reports the job FAILED with no specific details. | Verify jobs are valid, then resubmit. |
+| AUGER-OUTPUT-FAIL | Failure to copy one or more output files. Can be due to permission problem, quota problem, system error, etc. | Check if output files will exist after job execution and that output directory exists, resubmit jobs. |
+| AUGER-INPUT-FAIL | Auger failed to copy one or more of the requested input files, similar to output failures.  Can also happen if tape file is unavailable (e.g. missing/damaged tape) | Verify input file exists, then resubmit jobs. |
+| AUGER-TIMEOUT | Job timed out. | If more time is needed for job, add more resources. Also check whether code is hanging. |
+| AUGER-OVER_RLIMIT | Not enough resources, either RAM or disk space. | Add more resources for job. |
+| SWIF-MISSING-OUTPUT | Output file specified by user was not found. | Check if output file exists at end of job. |
+| SWIF-USER-NON-ZERO | User script exited with non-zero status code. | Your script exited with non-zero status. Check the code you are running. |
+| SWIF-SYSTEM-ERROR | Job failed owing to a problem with swif (e.g. network connection timeout) | Resubmit jobs. |
