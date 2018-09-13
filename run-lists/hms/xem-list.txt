@@ -9,7 +9,7 @@ swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/hms-xe
 swif run hms-xem-all
 
 # hcswif command for generating replay prod hms xem files
-./hcswif.py --mode replay --spectrometer HMS_PROD --run 1565 1566 1571-1581 1586 1588-1591 1592-1602 1603-1621 1622-1633 1634-1641 --name hms-xem-prod --project c-comm2017 --cpu 1
+./hcswif.py --mode replay --spectrometer HMS_PROD --run 1565 1566 1571-1581 1586 1588-1591 1592-1602 1603-1621 1622-1633 1634-1641 --name hms-xem-prod --project c-comm2017 --cpu 1 --ram 4096000000
 swif import -file /lustre/expphy/volatile/hallc/xem2/pooser/hcswif/output/hms-xem-prod.json
 swif run hms-xem-prod
 
