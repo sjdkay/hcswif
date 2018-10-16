@@ -7,7 +7,7 @@ setenv hallc_replay_dir "/w/hallc-scifs17exp/xem2/$USER/hallc-replay-f2xem"
 
 # -----------------------------------------------------------------------------
 #  Change if this gives you the wrong version of root, evio, etc
-source /site/12gev_phys/production.csh 2.1
+source /site/12gev_phys/softenv.csh 2.1
 
 # -----------------------------------------------------------------------------
 # Source setup scripts
