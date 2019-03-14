@@ -7,7 +7,11 @@ spec=$2
 while read line
 do
 
-runArray+=('/cache/hallc/spring17/raw/'${spec}'_all_0'${line}'.dat')
+if [ ${line} -gt 7000 ]; then
+    runArray+=('/cache/hallc/jpsi-007/raw/'${spec}'_all_0'${line}'.dat')
+else
+    runArray+=('/cache/hallc/spring17/raw/'${spec}'_all_0'${line}'.dat')
+fi
 
 done < ${list}
 

@@ -3,7 +3,7 @@
 from __future__ import print_function
 
 runListFile = 'ptemp.txt'
-vertListFile = open('shms-f2-boil-list.txt', 'w')
+vertListFile = open('shms-xgtr1-r2d2-list.txt', 'w')
 
 with open(runListFile) as rlf:
     l = rlf.readline()

@@ -19,7 +19,8 @@ if not os.path.isdir(out_dir):
     warnings.warn('out_dir: ' + out_dir + ' does not exist')
 
 # Where is your raw data?
-raw_dir = '/mss/hallc/spring17/raw'
+raw_dir      = '/mss/hallc/spring17/raw'
+jpsi_raw_dir = '/mss/hallc/jpsi-007/raw'
 if not os.path.isdir(raw_dir):
     warnings.warn('raw_dir: ' + raw_dir + ' does not exist')
 
@@ -195,7 +196,8 @@ def getReplayJobs(parsed_args, wf_name):
             # otherwise hms_all_XXXXX or shms_all_XXXXX
             coda_stem = spectrometer.lower() + '_all_' + str(run).zfill(5)
 
-        coda = os.path.join(raw_dir, coda_stem + '.dat')
+        if (run > 7000) : coda = os.path.join(jpsi_raw_dir, coda_stem + '.dat')
+        else            : coda = os.path.join(raw_dir, coda_stem + '.dat')
 
         # Check if raw data file exist
         if not os.path.isfile(coda):
