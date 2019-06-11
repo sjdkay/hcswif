@@ -66,15 +66,25 @@ $ swif run myswifjob
 ```
 
 ## Run a shell script or command, which may or may not be hcana-related
-This example will submit a job that runs myscript.sh, which presumably does something more complicated than "regular" replay. It uses a filelist text file called "myfiles" that contains one full path file location per line. These files will be added to the 'input' list of the shell script's job.
+This example will submit a job that runs myscript.sh, which presumably does something more complicated than "regular" replay. It uses a filelist text file called "myfiles" that contains one full path file location per line. These files will be added to the 'input' list of the shell script's job. Note that instead of specifying a filelist, you may explicitly put appropriate `jget`s in your shell script to read your raw data from tape.
 ```
-$ ./hcswif.py --mode command --command /some/directory/myscript.sh --name myswifjob --project c-comm2017 --filelist myfiles
+$ ./hcswif.py --mode command --command /some/directory/myscript.sh arg1 arg2 --name myswifjob --project c-comm2017 --filelist myfiles
 Wrote: /some/directory/myswifjob.json
 $ swif import -file myswifjob.json
 $ swif run myswifjob
 ```
 
-Note that instead of specifying a filelist, you may explicitly put appropriate `jget`s in your shell script to read your raw data from tape.
+## Turn a text file list of shell scripts into a workflow with multiple jobs
+hcswif will generate a workflow with one job per line in the text file myjobs.txt. Note that `--command`'s first argument `file` tells hcswif that this is a file to read, and not a shell script as in the previous example.
+```
+$ cat myjobs.txt
+/some/where/myscript.sh arg1 arg2
+/some/where/myscript.sh arg3 arg4
+/some/where/myotherscript.sh
+
+$ ./hcswif.py --mode command --command file /some/where/myjobs.txt --name test2
+Wrote: /home/jmatter/hcswif/output/test2.json
+```
 
 ## Warnings
 If some parameters aren't specified (e.g. project, events, filelist) you will be warned and possibly asked if you want to use the default value.
