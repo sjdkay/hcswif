@@ -32,9 +32,16 @@ datestr = now.strftime("%Y%m%d%H%M")
 hcswif_prefix = 'hcswif' + datestr
 
 #------------------------------------------------------------------------------
+# This is the main body of hcswif
 def main():
+    # Parse the arguments specified by the user
     parsed_args = parseArgs()
+
+    # Turn those arguments into a swif workflow in json format and
+    # generate a filename for the json file to write.
     workflow, outfile = getWorkflow(parsed_args)
+
+    # Write the workflow to disk
     writeWorkflow(workflow, outfile)
 
 #------------------------------------------------------------------------------
@@ -47,17 +54,17 @@ def parseArgs():
     parser.add_argument('--spectrometer', nargs=1, dest='spectrometer',
             help='spectrometer to analyze (HMS_ALL, SHMS_ALL, HMS_PROD, SHMS_PROD, COIN, HMS_COIN, SHMS_COIN, HMS_SCALER, SHMS_SCALER)')
     parser.add_argument('--run', nargs='+', dest='run',
-            help='a list of run numbers and ranges, or a file listing run numbers')
+            help='a list of run numbers and ranges; or a file listing run numbers')
     parser.add_argument('--events', nargs=1, dest='events',
             help='number of events to analyze (default=all)')
     parser.add_argument('--name', nargs=1, dest='name',
             help='workflow name')
     parser.add_argument('--replay', nargs=1, dest='replay',
             help='hcana replay script; path relative to hallc_replay')
-    parser.add_argument('--command', nargs=1, dest='command',
-            help='shell command or script to run; in quotes (command mode only)')
+    parser.add_argument('--command', nargs="+", dest='command',
+            help='shell command/script to run; or a file containing scripts to run (command mode only)')
     parser.add_argument('--filelist', nargs=1, dest='filelist',
-            help='file contaning list of input files to jget (command mode only)')
+            help='file containing list of files to get from tape (command mode only)')
     parser.add_argument('--project', nargs=1, dest='project',
             help='name of project')
     parser.add_argument('--disk', nargs=1, dest='disk',
@@ -254,39 +261,61 @@ def getReplayRuns(run_args):
 
 #------------------------------------------------------------------------------
 def getCommandJobs(parsed_args, wf_name):
-    # TODO: Multiple jobs per workflow, specified by a file
-    jobs = []
-    job = {}
-    job['name'] = wf_name + '_job'
 
-    # command for job should be specified by user
+    # command for job should have been specified by user
     if parsed_args.command==None:
         raise RuntimeError('Must specify command for batch job')
-    command = parsed_args.command[0]
-    job['command'] = command
 
-    # Add any necessary input files
-    if parsed_args.filelist==None:
-        warnings.warn('No file list specified! Assuming your shell script has any necessary jgets')
-    else:
-        filelist = parsed_args.filelist[0]
+    jobs = []
+    commands = []
+
+    # User specified a text file containing commands
+    if (parsed_args.command[0]=='file'):
+        filelist = parsed_args.command[1]
         f = open(filelist,'r')
         lines = f.readlines()
 
-        # We assume user has been smart enough to only specify valid files
+        # We assume user has been smart enough to only specify valid commands
         # or, at worst, lines only containing a \n
-        job['input'] = []
         for line in lines:
-            filename = line.strip('\n')
-            if len(filename)>0:
-                if not os.path.isfile(filename):
-                    warnings.warn('RAW DATA: ' + filename + ' does not exist')
-                inp={}
-                inp['local'] = os.path.basename(filename)
-                inp['remote'] = filename
-                job['input'].append(inp)
+            cmd = line.strip('\n')
+            if len(cmd)>0:
+                commands.append(cmd)
 
-    jobs.append(copy.deepcopy(job))
+    # Otherwise user only specified one command, which may or may not have arguments.
+    # join() works in either case.
+    else:
+        cmd = ' '.join(str(element) for element in parsed_args.command)
+        commands.append(cmd)
+
+    for cmd in commands:
+        job = {}
+        job['name'] = wf_name + '_job' + str(len(jobs))
+
+        job['command'] = cmd
+
+        # Add any necessary files from tape
+        if parsed_args.filelist==None:
+            warnings.warn('No file list specified. Assuming your shell script has any necessary jgets')
+        else:
+            filelist = parsed_args.filelist[0]
+            f = open(filelist,'r')
+            lines = f.readlines()
+
+            # We assume user has been smart enough to only specify valid files
+            # or, at worst, lines only containing a \n
+            job['input'] = []
+            for line in lines:
+                filename = line.strip('\n')
+                if len(filename)>0:
+                    if not os.path.isfile(filename):
+                        warnings.warn('RAW DATA: ' + filename + ' does not exist')
+                    inp={}
+                    inp['local'] = os.path.basename(filename)
+                    inp['remote'] = filename
+                    job['input'].append(inp)
+
+        jobs.append(copy.deepcopy(job))
 
     return jobs
 
