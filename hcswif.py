@@ -29,12 +29,12 @@ hcswif_dir = os.path.dirname(os.path.realpath(__file__))
 # hcswif_prefix is used as prefix for workflow, job names, filenames, etc.
 now = datetime.datetime.now()
 datestr = now.strftime("%Y%m%d%H%M")
-hcswif_prefix = 'hcswif' + datestr 
+hcswif_prefix = 'hcswif' + datestr
 
 #------------------------------------------------------------------------------
 def main():
     parsed_args = parseArgs()
-    workflow, outfile = getWorkflow(parsed_args) 
+    workflow, outfile = getWorkflow(parsed_args)
     writeWorkflow(workflow, outfile)
 
 #------------------------------------------------------------------------------
@@ -46,29 +46,29 @@ def parseArgs():
             help='type of workflow (replay or command)')
     parser.add_argument('--spectrometer', nargs=1, dest='spectrometer',
             help='spectrometer to analyze (HMS_ALL, SHMS_ALL, HMS_PROD, SHMS_PROD, COIN, HMS_COIN, SHMS_COIN, HMS_SCALER, SHMS_SCALER)')
-    parser.add_argument('--run', nargs='+', dest='run', 
+    parser.add_argument('--run', nargs='+', dest='run',
             help='a list of run numbers and ranges, or a file listing run numbers')
     parser.add_argument('--events', nargs=1, dest='events',
             help='number of events to analyze (default=all)')
-    parser.add_argument('--name', nargs=1, dest='name', 
+    parser.add_argument('--name', nargs=1, dest='name',
             help='workflow name')
-    parser.add_argument('--replay', nargs=1, dest='replay', 
+    parser.add_argument('--replay', nargs=1, dest='replay',
             help='hcana replay script; path relative to hallc_replay')
-    parser.add_argument('--command', nargs=1, dest='command', 
+    parser.add_argument('--command', nargs=1, dest='command',
             help='shell command or script to run; in quotes (command mode only)')
-    parser.add_argument('--filelist', nargs=1, dest='filelist', 
+    parser.add_argument('--filelist', nargs=1, dest='filelist',
             help='file contaning list of input files to jget (command mode only)')
-    parser.add_argument('--project', nargs=1, dest='project', 
+    parser.add_argument('--project', nargs=1, dest='project',
             help='name of project')
-    parser.add_argument('--disk', nargs=1, dest='disk', 
+    parser.add_argument('--disk', nargs=1, dest='disk',
             help='disk space in bytes')
-    parser.add_argument('--ram', nargs=1, dest='ram', 
+    parser.add_argument('--ram', nargs=1, dest='ram',
             help='ram space in bytes')
-    parser.add_argument('--cpu', nargs=1, dest='cpu', 
+    parser.add_argument('--cpu', nargs=1, dest='cpu',
             help='cpu cores')
-    parser.add_argument('--time', nargs=1, dest='time', 
+    parser.add_argument('--time', nargs=1, dest='time',
             help='max run time per job in seconds allowed before killing jobs')
-    parser.add_argument('--shell', nargs=1, dest='shell', 
+    parser.add_argument('--shell', nargs=1, dest='shell',
             help='shell to use for jobs')
 
     # Check if any args specified
@@ -127,7 +127,7 @@ def getReplayJobs(parsed_args, wf_name):
     if parsed_args.replay==None:
         # User has not specified a script, so we provide them with default options
 
-        # COIN has two options: hElec_pProt or pElec_hProt depending on 
+        # COIN has two options: hElec_pProt or pElec_hProt depending on
         # the spectrometer configuration
         if spectrometer.upper() == 'COIN':
             print('COIN replay script depends on spectrometer configuration.')
@@ -135,7 +135,7 @@ def getReplayJobs(parsed_args, wf_name):
             print('2) HMS=p, SHMS=e (SCRIPTS/COIN/PRODUCTION/replay_production_coin_pElec_hProt.C)')
             replay_script = input("Enter 1 or 2: ")
 
-            script_dict = { '1' : 'SCRIPTS/COIN/PRODUCTION/replay_production_coin_hElec_pProt.C', 
+            script_dict = { '1' : 'SCRIPTS/COIN/PRODUCTION/replay_production_coin_hElec_pProt.C',
                             '2' : 'SCRIPTS/COIN/PRODUCTION/replay_production_coin_pElec_hProt.C' }
             replay_script = script_dict[replay_script]
 
@@ -158,7 +158,7 @@ def getReplayJobs(parsed_args, wf_name):
     # Number of events; default is -1 (i.e. all)
     if parsed_args.events==None:
         warnings.warn('No events specified. Analyzing all events.')
-        evts = -1 
+        evts = -1
     else:
         evts = parsed_args.events[0]
 
@@ -220,10 +220,10 @@ def getReplayRuns(run_args):
     # User specified a file containing runs
     if (run_args[0]=='file'):
         filelist = run_args[1]
-        f = open(filelist,'r') 
+        f = open(filelist,'r')
         lines = f.readlines()
 
-        # We assume user has been smart enough to only specify valid run numbers 
+        # We assume user has been smart enough to only specify valid run numbers
         # or, at worst, lines only containing a \n
         for line in lines:
             run = line.strip('\n')
@@ -246,7 +246,7 @@ def getReplayRuns(run_args):
             elif re.match('^\d+$', arg):
                 runs.append(int(arg))
 
-            # Else, invalid argument so we warn and skip it 
+            # Else, invalid argument so we warn and skip it
             else:
                 warnings.warn('Invalid run argument: ' + arg)
 
@@ -267,10 +267,10 @@ def getCommandJobs(parsed_args, wf_name):
 
     # Add any necessary input files
     if parsed_args.filelist==None:
-        warnings.warn('No file list specified! Assuming your shell script has any necessary jgets') 
+        warnings.warn('No file list specified! Assuming your shell script has any necessary jgets')
     else:
         filelist = parsed_args.filelist[0]
-        f = open(filelist,'r') 
+        f = open(filelist,'r')
         lines = f.readlines()
 
         # We assume user has been smart enough to only specify valid files
@@ -316,7 +316,7 @@ def addCommonJobInfo(workflow, parsed_args):
 
     # RAM in bytes
     if parsed_args.ram==None:
-        ram_bytes = 2500000000 
+        ram_bytes = 2500000000
     else:
         ram_bytes = int(parsed_args.ram[0])
 
@@ -328,7 +328,7 @@ def addCommonJobInfo(workflow, parsed_args):
 
     # Max time in seconds before killing jobs
     if parsed_args.time==None:
-        time = 14400 
+        time = 14400
     else:
         time = int(parsed_args.time[0])
 
@@ -350,10 +350,10 @@ def addCommonJobInfo(workflow, parsed_args):
         # TODO: Allow user to specify all of these parameters
         job['os'] = 'centos7'
         job['track'] = 'analysis'
-        job['diskBytes'] = disk_bytes 
-        job['ramBytes'] = ram_bytes 
-        job['cpuCores'] = cpu 
-        job['timeSecs'] = time 
+        job['diskBytes'] = disk_bytes
+        job['ramBytes'] = ram_bytes
+        job['cpuCores'] = cpu
+        job['timeSecs'] = time
         job['shell'] = shell
 
         workflow['jobs'][n] = copy.deepcopy(job)
