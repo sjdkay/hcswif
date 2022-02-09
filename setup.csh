@@ -7,7 +7,7 @@ setenv hallc_replay_dir "/home/$USER/hallc_replay"
 
 # -----------------------------------------------------------------------------
 #  Change if this gives you the wrong version of root, evio, etc
-source /site/12gev_phys/softenv.csh 2.1
+source /site/12gev_phys/softenv.csh 2.4
 
 # -----------------------------------------------------------------------------
 # Source setup scripts
