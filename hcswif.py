@@ -14,9 +14,12 @@ import warnings
 # Define environment
 
 # Where do you want your job output (json files, stdout, stderr)?
-out_dir = os.path.join('/home/', getpass.getuser() , 'hcswif/output')
+out_dir   = os.path.join('/farm_out/', getpass.getuser() , 'hcswif/output')
+json_dir = os.path.join('/home/', getpass.getuser() , 'hcswif/json')
 if not os.path.isdir(out_dir):
     warnings.warn('out_dir: ' + out_dir + ' does not exist')
+if not os.path.isdir(json_dir):
+    warnings.warn('json_dir: ' + json_dir + ' does not exist')
 
 # Where is your raw data?
 raw_dir = '/mss/hallc/spring17/raw'
@@ -65,8 +68,8 @@ def parseArgs():
             help='shell command/script to run; or a file containing scripts to run (command mode only)')
     parser.add_argument('--filelist', nargs=1, dest='filelist',
             help='file containing list of files to get from tape (command mode only)')
-    parser.add_argument('--project', nargs=1, dest='project',
-            help='name of project')
+    parser.add_argument('--account', nargs=1, dest='account',
+            help='name of account')
     parser.add_argument('--disk', nargs=1, dest='disk',
             help='disk space in bytes')
     parser.add_argument('--ram', nargs=1, dest='ram',
@@ -76,7 +79,7 @@ def parseArgs():
     parser.add_argument('--time', nargs=1, dest='time',
             help='max run time per job in seconds allowed before killing jobs')
     parser.add_argument('--shell', nargs=1, dest='shell',
-            help='shell to use for jobs')
+            help='Currently a shell cannot be specified in SWIF2')
 
     # Check if any args specified
     if len(sys.argv) < 2:
@@ -89,7 +92,7 @@ def parseArgs():
 def getWorkflow(parsed_args):
     # Initialize
     workflow = initializeWorkflow(parsed_args)
-    outfile = os.path.join(out_dir, workflow['name'] + '.json')
+    outfile = os.path.join(json_dir, workflow['name'] + '.json')
 
     # Get jobs
     if parsed_args.mode==None:
@@ -102,7 +105,7 @@ def getWorkflow(parsed_args):
     else:
         raise ValueError('Mode must be replay or command')
 
-    # Add project to jobs
+    # Add account to jobs
     workflow = addCommonJobInfo(workflow, parsed_args)
 
     return workflow, outfile
@@ -215,7 +218,7 @@ def getReplayJobs(parsed_args, wf_name):
         job['input'][0]['remote'] = coda
 
         # command for job is `/hcswifdir/hcswif.sh REPLAY RUN NUMEVENTS`
-        job['command'] = " ".join([batch, replay_script, str(run), str(evts)])
+        job['command'] = [" ".join([batch, replay_script, str(run), str(evts)])]
 
         jobs.append(copy.deepcopy(job))
 
@@ -321,21 +324,21 @@ def getCommandJobs(parsed_args, wf_name):
 
 #------------------------------------------------------------------------------
 def addCommonJobInfo(workflow, parsed_args):
-    # Project
+    # Account
     # TODO: Remove default?
-    if parsed_args.project==None:
-        warnings.warn('No project specified.')
+    if parsed_args.account==None:
+        warnings.warn('No account specified.')
 
-        project_prompt = 'x'
-        while project_prompt.lower() not in ['y', 'n', 'yes', 'no']:
-            project_prompt = input('Should I use project=c-comm2017? (y/n): ')
+        account_prompt = 'x'
+        while account_prompt.lower() not in ['y', 'n', 'yes', 'no']:
+            account_prompt = input('Should I use account=hallc? (y/n): ')
 
-        if project_prompt.lower() in ['y', 'yes']:
-            project = 'c-comm2017'
+        if account_prompt.lower() in ['y', 'yes']:
+            account = 'hallc'
         else:
-            raise RuntimeError('Please specify project as argument')
+            raise RuntimeError('Please specify account as argument')
     else:
-        project = parsed_args.project[0]
+        account = parsed_args.account[0]
 
     # Disk space in bytes
     if parsed_args.disk==None:
@@ -371,19 +374,18 @@ def addCommonJobInfo(workflow, parsed_args):
     for n in range(0, len(workflow['jobs'])):
         job = copy.deepcopy(workflow['jobs'][n])
 
-        job['project'] = project
+        job['account'] = account
 
         job['stdout'] = os.path.join(out_dir, job['name'] + '.out')
         job['stderr'] = os.path.join(out_dir, job['name'] + '.err')
 
         # TODO: Allow user to specify all of these parameters
-        job['os'] = 'centos7'
-        job['track'] = 'analysis'
-        job['diskBytes'] = disk_bytes
-        job['ramBytes'] = ram_bytes
-        job['cpuCores'] = cpu
-        job['timeSecs'] = time
-        job['shell'] = shell
+        job['constraint'] = 'centos79'
+        job['partition'] = 'production'
+        job['disk_bytes'] = disk_bytes
+        job['ram_bytes'] = ram_bytes
+        job['cpu_cores'] = cpu
+        job['time_secs'] = time
 
         workflow['jobs'][n] = copy.deepcopy(job)
         job.clear()
@@ -393,7 +395,7 @@ def addCommonJobInfo(workflow, parsed_args):
 #------------------------------------------------------------------------------
 def writeWorkflow(workflow, outfile):
     with open(outfile, 'w') as f:
-        json.dump(workflow, f)
+        json.dump(workflow, f, sort_keys=True, indent=2, separators=(',', ': '))
 
     print('Wrote: ' + outfile)
     return
