@@ -213,9 +213,9 @@ def getReplayJobs(parsed_args, wf_name):
             continue
 
         job['name'] =  wf_name + '_' + coda_stem
-        job['input'] = [{}]
-        job['input'][0]['local'] = os.path.basename(coda)
-        job['input'][0]['remote'] = coda
+        job['inputs'] = [{}]
+        job['inputs'][0]['local'] = os.path.basename(coda)
+        job['inputs'][0]['remote'] = coda
 
         # command for job is `/hcswifdir/hcswif.sh REPLAY RUN NUMEVENTS`
         job['command'] = [" ".join([batch, replay_script, str(run), str(evts)])]
@@ -307,7 +307,7 @@ def getCommandJobs(parsed_args, wf_name):
 
             # We assume user has been smart enough to only specify valid files
             # or, at worst, lines only containing a \n
-            job['input'] = []
+            job['inputs'] = []
             for line in lines:
                 filename = line.strip('\n')
                 if len(filename)>0:
@@ -316,7 +316,7 @@ def getCommandJobs(parsed_args, wf_name):
                     inp={}
                     inp['local'] = os.path.basename(filename)
                     inp['remote'] = filename
-                    job['input'].append(inp)
+                    job['inputs'].append(inp)
 
         jobs.append(copy.deepcopy(job))
 

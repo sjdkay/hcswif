@@ -1,9 +1,9 @@
 # hcswif
 hcswif is a python script for generating JSON files that describe a swif2 workflow to be run on JLab's ifarm
 
-The json output is one long string, but the following command will display it in a pretty format:
+The json output from `swif2 export <workflow>` is one long string, but the following command will display it in a pretty format:
 ```
-python -m json.tool myswifjob.json
+swif2 export <workflow> | python -m json.tool > myswifjob_export.json
 ```
 
 Visit these links for more details on swif2
@@ -113,7 +113,7 @@ These are descriptions of some errors you may see when you run `swif2 status`. T
 | ERROR | Description | Possible solution |
 | ---------- | ----------- | ----------------- |
 | SITE_PREP_FAIL | SWIF’s attempt to submit jobs to Slurm failed. Includes server-side problems as well as user failing to provide valid job parameters (e.g. incorrect account name, too many resources, etc.) | If requested resources are known to be correct, resubmit. Otherwise, modify job resources using `swif2 modify-job`.|
-| SLURM_FAILED | Slurm reports the job FAILED with no specific details. | Verify jobs are valid, then resubmit. |
+| SLURM_FAILED | Slurm reports the job FAILED with no specific details. | Verify jobs are valid, then resubmit. This can happen if the /raw/ directory is not set appropriately in hallc_replay.  |
 | SWIF_OUTPUT_FAIL | Failure to copy one or more output files. Can be due to permission problem, quota problem, system error, etc. | Check if output files will exist after job execution and that output directory exists, resubmit jobs. |
 | SWIF_INPUT_FAIL | SWIF failed to copy one or more of the requested input files, similar to output failures.  Can also happen if tape file is unavailable (e.g. missing/damaged tape) | Verify input file exists, then resubmit jobs. |
 | SLURM_TIMEOUT | Job timed out. | If more time is needed for job, add more resources. Also check whether code is hanging. |
@@ -122,5 +122,5 @@ These are descriptions of some errors you may see when you run `swif2 status`. T
 | SWIF_USER_NON_ZERO | User script exited with non-zero status code. | Your script exited with non-zero status. Check the code you are running. |
 | SWIF_SYSTEM_ERROR | Job failed owing to a problem with swif2 (e.g. network connection timeout) | Resubmit jobs. |
 
-##Debugging 
+## Debugging 
 If recieving a SWIF_USER_NON_ZERO error or similar error which points to the script failing to run once resources are allocated, look at the out_dir/*.err files to identify problems.  If the script never runs, try copying the command line fo the output JSON file and run it on an interactive farm (ifarm) node.  Ensure all the output directories exist for hallc_replay including ROOTfiles and REPORT_OUTPUT.  Make sure these are symlinks to /volatile/ or /work/ or /cache/.  Large files should not be saved to /group/ or /home/.
