@@ -56,7 +56,6 @@ disk         | optional | optional | How much disk space do you need in bytes? D
 ram          | optional | optional | How much RAM do you need in bytes? Default = 2.5GB
 cpu          | optional | optional | How many cores? Default = 1
 
-
 # Examples
 ## Replay runs using default hcana scripts
 This will replay 50k SHMS events for COIN runs 2187-2212, 2023-2066, and 2049 using the default script SCRIPTS/SHMS/PRODUCTION/replay_production_shms_coin.C
@@ -124,3 +123,31 @@ These are descriptions of some errors you may see when you run `swif2 status`. T
 
 ## Debugging 
 If recieving a SWIF_USER_NON_ZERO error or similar error which points to the script failing to run once resources are allocated, look at the out_dir/*.err files to identify problems.  If the script never runs, try copying the command line fo the output JSON file and run it on an interactive farm (ifarm) node.  Ensure all the output directories exist for hallc_replay including ROOTfiles and REPORT_OUTPUT.  Make sure these are symlinks to /volatile/ or /work/ or /cache/.  Large files should not be saved to /group/ or /home/.
+
+SJDK - 22/02/22 - Merged in some material from UTIL_BATCH
+
+### Comments
+
+In principle, I see no issue with deleting the Auger_batch_scripts and just using the hscswif script to submit workflows, some comments on this
+   - hcswif needs to incorporate setting of memory/disk allocation dynamically depending upon raw .dat file
+     - This was a big issue I've run into previously, some files just fail entirely without setting an adequate disk space
+   - hcswif needs to be tested with scripts from the Analysis_Scripts directory, some of these do a fairly large sequence of tasks
+   - Need to edit/modify input run lists to work with hcswif (possibly), needs testing at least anyway
+   - In some ways, I'd also just prefer it if running hcswif created AND submitted the workflow (as I've done in the Auger ones). I don't really see why this needs to be done as a separate command (how about just adding it as a y/n case to submit after creation?)
+
+- I have some scripts which set up sym links, we could move these in since this is a common issue people run into (not having sym links setup in all of the places they're needed)
+
+### Auger_batch_scripts
+
+- Scripts for creating Auger style jobs and submitting them as part of a swif2 workflow
+- Two templates included, .py and .sh versions. .py script ***REQUIRES*** UTIL_PION ltsep module
+- Shell_Scripts
+  - Subdirectory, include some examples of .sh scripts for job creation and submission
+
+### Analysis_Scripts
+
+- Some example shell scripts to do specific tasks such as detector calibrations, analysis and so on
+
+### InputRunLists
+
+- A selection of run lists for the Kaon/PionLT data. Could be added to with different user lists as needed
