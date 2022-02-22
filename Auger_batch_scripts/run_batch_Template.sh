@@ -94,7 +94,8 @@ while true; do
 		    echo " "	
 		fi
 		done < "$inputFile"
-	     )
+	    )
+	    # Run the workflow
 	    eval 'swif2 run ${Workflow}'
 	    break;;
         [Nn]* ) 

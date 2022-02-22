@@ -110,6 +110,7 @@ while yes_or_no("Do you wish to begin a new batch submission?"):
         batchfile.write("COMMAND:"+BATCHPATH+"/Analysis_Scripts/Batch_Template.sh "+str(runNum)+" "+MAXEVENTS+"\n") # Insert your script and relevant arguments at the end
         batchfile.close()
         print("Submitting job "+str(LineNum)+"/"+str(MaxLine)+" - "+JobName)
+        # Submit the job file to the swif2 workflow
         subprocess.call(["swif2", "add-jsub", Workflow, "-script", batch])
         time.sleep(2)
         if os.path.exists(batch):
@@ -118,6 +119,7 @@ while yes_or_no("Do you wish to begin a new batch submission?"):
     print("############################################ END OF JOB SUBMISSIONS ###########################################")
     print("###############################################################################################################")
     print("\n")
+    # Run the workflow
     subprocess.call(["swif2", "run", Workflow])
     break
     sys.exit(3)
