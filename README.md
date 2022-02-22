@@ -151,6 +151,11 @@ In principle, I see no issue with deleting the Auger_batch_scripts and just usin
 
 - Scripts for creating Auger style jobs and submitting them as part of a swif2 workflow
 - Two templates included, .py and .sh versions. .py script ***REQUIRES*** UTIL_PION ltsep module
+  - To get ltsep from UTIL_PION
+    - Grab the latest branch/version - LTSep_Analysis_2022 - https://github.com/JeffersonLab/UTIL_PION/tree/LTSep_Analysis_2022
+    - Clone this somewhere and switch to the correct branch
+    - cp -r bin/python/ltsep ~/.local/lib/python3.4/site-packages/
+      - OR whatever version of python you're using if you aren't using 3.4
 - Shell_Scripts
   - Subdirectory, include some examples of .sh scripts for job creation and submission
 
