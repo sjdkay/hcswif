@@ -1,8 +1,8 @@
 # Auger_batch_scripts
 
-22/02/22 
-Stephen JD Kay
-University of Regina
+22/02/22  
+Stephen JD Kay  
+University of Regina  
 
 - This directory contains a template for creating a swif2 job submission script. It utilises the add-jsub functionality of swif2 to make simple, readable auger style jobs that are submitted to a swif2 workflow.
 
