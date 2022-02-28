@@ -77,6 +77,7 @@ $ swif2 run myswifjob
 
 ## Run a shell script or command, which may or may not be hcana-related
 This example will submit a job that runs myscript.sh, which presumably does something more complicated than "regular" replay. It uses a filelist text file called "myfiles" that contains one full path file location per line. These files will be added to the 'input' list of the shell script's job. Note that instead of specifying a filelist, you may explicitly put appropriate `jget`s in your shell script to read your raw data from tape.
+### SJDK - 28/02/22 - You should not submit a job which includes a jget line in it, avoid this like the plague
 ```
 $ ./hcswif.py --mode command --command /some/directory/myscript.sh arg1 arg2 --name myswifjob --account hallc --filelist myfiles
 Wrote: /some/directory/myswifjob.json

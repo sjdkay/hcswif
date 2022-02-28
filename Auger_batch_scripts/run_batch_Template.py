@@ -107,7 +107,7 @@ while yes_or_no("Do you wish to begin a new batch submission?"):
             batchfile.write("MEMORY: 4000 MB\n")
         batchfile.write("CPU: 1\n") # hcana is single core, requesting more CPU's will lower priority but won't speed up your job
         batchfile.write("INPUT_FILES: "+MSSstub+"\n")
-        batchfile.write("COMMAND:"+BATCHPATH+"/Analysis_Scripts/Batch_Template.sh "+str(runNum)+" "+MAXEVENTS+"\n") # Insert your script and relevant arguments at the end
+        batchfile.write("COMMAND:"+BATCHPATH+"/Analysis_Scripts/Batch_Template.sh "+str(runNum)+" "+str(MAXEVENTS)+"\n") # Insert your script and relevant arguments at the end
         batchfile.close()
         print("Submitting job "+str(LineNum)+"/"+str(MaxLine)+" - "+JobName)
         # Submit the job file to the swif2 workflow

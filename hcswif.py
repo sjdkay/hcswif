@@ -9,6 +9,23 @@ import getpass
 import argparse
 import datetime
 import warnings
+import subprocess # SJDK 28/02/22 - Addded subprocess to run certain commands
+
+################################################################################################################################################
+# SJDK - 28/02/22 - Short y/n loop for use later 
+# Short yes/no question loop for use later
+def yes_or_no(question):
+    answer = input(question + "(y/n): ").lower().strip()
+    print("")
+    while not(answer == "y" or answer == "yes" or \
+    answer == "n" or answer == "no"):
+        print("Input yes or no")
+        answer = input(question + "(y/n):").lower().strip()
+        print("")
+    if answer[0] == "y":
+        return True
+    else:
+        return False
 
 #------------------------------------------------------------------------------
 # Define environment
@@ -16,11 +33,22 @@ import warnings
 # Where do you want your job output (json files, stdout, stderr)?
 out_dir   = os.path.join('/farm_out/', getpass.getuser() , 'hcswif/output')
 json_dir = os.path.join('/home/', getpass.getuser() , 'hcswif/json')
+# SJDK 28/02/22 - Added y/n question to create folders if they do not already exist
+# Why does the script run at all if these do not exist? This should be a hard exit if they aren't found (and aren't created)
+# Surely scripts will not run subsequently if these are missing?
 if not os.path.isdir(out_dir):
     warnings.warn('out_dir: ' + out_dir + ' does not exist')
+    print("You may not have a Slurm account or may not have run a job before - execute srun hostname")
+    while yes_or_no("Do you want to make this directory?"):
+        subprocess.call(["mkdir","/farm_out/"+getpass.getuser()+"/hcswif"])
+        subprocess.call(["mkdir","/farm_out/"+getpass.getuser()+"/hcswif/output"])
+        break
 if not os.path.isdir(json_dir):
     warnings.warn('json_dir: ' + json_dir + ' does not exist')
-
+    while yes_or_no("Do you want to make this directory?"):
+        subprocess.call(["mkdir","/home/"+getpass.getuser()+"/hcswif"])
+        subprocess.call(["mkdir","/home/"+getpass.getuser()+"/hcswif/json"])
+        break
 # Where is your raw data?
 raw_dir = '/mss/hallc/spring17/raw'
 if not os.path.isdir(raw_dir):
@@ -163,7 +191,6 @@ def getReplayJobs(parsed_args, wf_name):
     # User specified a script so we use that one
     else:
         replay_script = parsed_args.replay[0]
-
 
     # Number of events; default is -1 (i.e. all)
     if parsed_args.events==None:

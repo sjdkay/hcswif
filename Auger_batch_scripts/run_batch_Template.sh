@@ -86,6 +86,7 @@ while true; do
 		# Delete the script we just submitted as a batch job, this stops this folder getting clogged
 		rm ${batch}
                 i=$(( $i + 1 ))
+		if [ $i == $numlines ]; then
 		    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 		    echo " "
 		    echo "###############################################################################################################"

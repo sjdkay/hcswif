@@ -6,22 +6,49 @@
 ### A batch submission script based on an earlier version by Richard Trotta, Catholic University of America
 
 echo "Running as ${USER}"
-RunList=$1
-if [[ -z "$1" ]]; then
+# SJDK - 28/02/22 - This works for now BUT it should really try and get these from the run list
+# Need to change these a little, should check whether arguments are good or not REGARDLESS of whether they're blank
+if [[ -z "$1" || ! "$RUNTYPE" =~ Prod|Lumi|HeePSing|HeePCoin|fADC|Optics ]]; then # Check the 2nd argument was provided and that it's one of the valid options
+    echo ""
+    echo "I need a valid run type"
+    while true; do
+	echo ""
+	read -p "Please type in a run type from - Prod - Lumi - HeePSing - HeePCoin - fADC - Optics - Case sensitive! - or press ctrl-c to exit : " RUNTYPE
+	case $RUNTYPE in
+	    '');; # If blank, prompt again
+	    'Prod'|'Lumi'|'HeePSing'|'HeePCoin'|'Optics'|'fADC') break;; # If a valid option, break the loop and continue
+	esac
+    done
+fi
+if [[ -z "$2" || ! "$TARGET" =~ LH2|LD2|Dummy10cm|Carbon0p5|AuFoil|Optics1|Optics2|CarbonHole ]]; then # Check the 3rd argument was provided and that it's one of the valid options
+    echo ""
+    echo "I need a valid target"
+    while true; do	
+	echo ""
+	read -p "Please type in a target from - LH2 - LD2 - Dummy10cm - Carbon0p5 - AuFoil - Optics1 - Optics2 - CarbonHole - Case sensitive! - or press ctrl-c to exit : " TARGET
+	case $TARGET in
+	    '');; # If blank, prompt again
+	    'LH2'|'LD2'|'Dummy10cm'|'Carbon0p5'|'AuFoil'|'Optics1'|'Optics2'|'CarbonHole') break;; # If a valid option, break the loop and continue
+	esac
+    done
+fi
+
+RunList=$3
+if [[ -z "$3" ]]; then
     echo "I need a run list process!"
     echo "Please provide a run list as input"
     exit 2
 fi
-if [[ $2 -eq "" ]]; then
+if [[ $4 -eq "" ]]; then
     MAXEVENTS=-1
 else
-    MAXEVENTS=$2
+    MAXEVENTS=$4
 fi
 
 # 15/02/22 - SJDK - Added the swif2 workflow as a variable you can specify here
 Workflow="LTSep_${USER}" # Change this as desired
 # Input run numbers, this just points to a file which is a list of run numbers, one number per line
-inputFile="/group/c-pionlt/USERS/${USER}/hallc_replay_lt/hcswif/InputRunLists/${RunList}"
+inputFile="/group/c-pionlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/${RunList}"
 
 while true; do
     read -p "Do you wish to begin a new batch submission? (Please answer yes or no) " yn
@@ -71,7 +98,7 @@ while true; do
                 fi
 		echo "CPU: 1" >> ${batch} ### hcana is single core, setting CPU higher will lower priority and gain you nothing!
 		echo "INPUT_FILES: ${tape_file}" >> ${batch}
-                echo "COMMAND:/group/c-pionlt/USERS/${USER}/hallc_replay_lt/hcswif/Analysis_Scripts/PionLT.sh ${runNum} ${MAXEVENTS}"  >> ${batch}
+                echo "COMMAND:/group/c-pionlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/Analysis_Scripts/PionLT.sh ${RUNTYPE} ${TARGET} ${runNum} ${MAXEVENTS}"  >> ${batch}
                 echo "Submitting ${batch}"
                 eval "swif2 add-jsub ${Workflow} -script ${batch} 2>/dev/null"
                 echo " "
