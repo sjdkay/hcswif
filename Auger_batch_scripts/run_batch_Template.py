@@ -86,7 +86,7 @@ while yes_or_no("Do you wish to begin a new batch submission?"):
         batch = USER+"_"+str(runNum)+"_Job.txt"
         # Print the size of the raw .dat file (converted to GB) to screen. sed command reads line 3 of the tape stub without the leading size=
         TapeFileSize = round((float(subprocess.check_output(["sed", "-n", '4 s/^[^=]*= *//p', MSSstub]))/1000000000), 3)
-        if TapeFileSize == 0:
+        if TapeFileSize == 0: # If the tape file is under 1GB, request 2GB of disk space as a default
             TapeFileSize = 2
         # Creation of batch script for submission, the script is just a series of commands
         # We add these to the file (batch) via a series of write commands)
