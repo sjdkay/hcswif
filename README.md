@@ -133,7 +133,7 @@ UTIL_BATCH - https://github.com/JeffersonLab/UTIL_BATCH
 
 Is a collection of scripts used by the Kaon/PionLT collaborations for submitting jobs to the farm. This was recently updated to use swif2. The scripts previously used AUGER.
 
-The updated scripts now just use the swif2 add-jsub functionality to submit the old AUGER style jobs. This seems to work pretty well.
+The updated scripts now just use the swif2 add-jsub functionality to submit the old AUGER style jobs. This seems to work pretty well. Indeed, this seems to do some things which it doesn't look like hcswif is doing (e.g. dynamically allocating memory/disk space resources or running fairly complex scripts on a per run basis).
 
 I don't like the parallel development of similar tools, so if possible, I would like to merge in the tools and scripts developed for UTIL_BATCH into hcswif and just use this going forward.
 
@@ -151,19 +151,20 @@ In principle, I see no issue with deleting the Auger_batch_scripts and just usin
 ## Auger_batch_scripts
 
 - Scripts for creating Auger style jobs and submitting them as part of a swif2 workflow
-- Two templates included, .py and .sh versions. .py script ***REQUIRES*** UTIL_PION ltsep module
-  - To get ltsep from UTIL_PION
-    - Grab the latest branch/version - LTSep_Analysis_2022 - https://github.com/JeffersonLab/UTIL_PION/tree/LTSep_Analysis_2022
-    - Clone this somewhere and switch to the correct branch
-    - cp -r bin/python/ltsep ~/.local/lib/python3.4/site-packages/
-      - OR whatever version of python you're using if you aren't using 3.4
-- Shell_Scripts
-  - Subdirectory, include some examples of .sh scripts for job creation and submission
+- Two templates included, .py and .sh versions. .py script, .py script sets some paths automatically
+  - These templates are intended to be very flexible, they work by iterating over a plain text list of runs (1 run per line)
+  - The run number is supplied as an argument to a shell script as the job creation and submission script iterates over the file list
+  - The shell script executed in the file can be as simple or as complex as you like (see the shell scripts sub directory for examples)
+  - Using the template, you can just create a shell script to do whatever analysis tasks you want and then rapidly parallelise this for a large number of runs
 
-## Analysis_Scripts
+### Shell_Scripts
+
+- Subdirectory, includes some examples of .sh scripts for job creation and submission
+
+### Analysis_Scripts
 
 - Some example shell scripts to do specific tasks such as detector calibrations, analysis and so on
 
-## InputRunLists
+### InputRunLists
 
 - A selection of run lists for the Kaon/PionLT data. Could be added to with different user lists as needed

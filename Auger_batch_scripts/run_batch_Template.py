@@ -4,10 +4,7 @@
 ### 11/01/22
 ### stephen.kay@uregina.ca
 ### A new version of the batch submission script that uses python to create the batch file and submit it
-### This SHOULD be more flexible in terms of pathing - it will grab paths using the ltsep package
-### Requires the ltsep package which is available in UTIL_PION!
-
-# Execute with python3 run_batch_Template.py RUNLIST MAXEVENTS(optional)
+#### Execute with python3 run_batch_Template.py RUNLIST MAXEVENTS(optional)
 
 # Import relevant packages
 import sys, math, os, subprocess, time
@@ -42,21 +39,17 @@ def yes_or_no(question):
 
 ################################################################################################################################################
 
-'''
-ltsep package import and pathing definitions - Need to get this from UTIL_PION for this script to work, needs to be copied to correct location
-'''
+# This block specifies several paths used later
+# Change the hcswifLoc/Script/InputFilePath as needed
 
-# Import package for cuts
-import ltsep as lt 
+USER=(subprocess.getstatusoutput("whoami"))[1] # Grab user info for file finding
+HOST=(subprocess.getstatusoutput("hostname"))[1]
+REPLAYPATH="/group/c-pionlt/USERS/%s/hallc_replay_lt" % (USER) # Path to your hallc replay directory, change as needed
+hcswifLoc="/group/c-pionlt/USERS/%s/hallc_replay_lt/hcswif" % (USER)
+Script="%s/Auger_batch_scripts/Analysis_Scripts/Batch_Template.sh" % (hcswifLoc) # Change this as desired. This is the script that each job will run.
+inputFilePath="%s/Auger_batch_scripts/InputRunLists/%s" % (hcswifLoc, RunList)
 
-# Add this to all files for more dynamic pathing
-USER =  lt.SetPath(os.path.realpath(__file__)).getPath("USER") # Grab user info for file finding
-HOST = lt.SetPath(os.path.realpath(__file__)).getPath("HOST")
-REPLAYPATH = lt.SetPath(os.path.realpath(__file__)).getPath("REPLAYPATH")
-BATCHPATH = REPLAYPATH+"/hcswif" # Crappy way of doing this for now, add it to ltsep?
-inputFilePath = BATCHPATH+"/InputRunLists/"+RunList
-
-print("Running as %s on %s, hallc_replay_lt path assumed as %s" % (USER, HOST, REPLAYPATH))
+print("Running as %s on %s, hallc_replay path assumed as %s" % (USER, HOST, REPLAYPATH))
 
 # 15/02/22 - SJDK - Added the swif2 workflow as a variable you can specify here
 Workflow = "LTSep_"+USER # Change this as desired, could be changed to an input argument if you really want
@@ -107,7 +100,7 @@ while yes_or_no("Do you wish to begin a new batch submission?"):
             batchfile.write("MEMORY: 4000 MB\n")
         batchfile.write("CPU: 1\n") # hcana is single core, requesting more CPU's will lower priority but won't speed up your job
         batchfile.write("INPUT_FILES: "+MSSstub+"\n")
-        batchfile.write("COMMAND:"+BATCHPATH+"/Analysis_Scripts/Batch_Template.sh "+str(runNum)+" "+str(MAXEVENTS)+"\n") # Insert your script and relevant arguments at the end
+        batchfile.write(("COMMAND:%s %s %s \n") %(Script, runNum, MAXEVENTS)) # Insert relevant arguments for script as needed
         batchfile.close()
         print("Submitting job "+str(LineNum)+"/"+str(MaxLine)+" - "+JobName)
         # Submit the job file to the swif2 workflow
